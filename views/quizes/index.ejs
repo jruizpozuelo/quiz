@@ -2,7 +2,7 @@
 	<input type="text" name="search" value=""/>
 	<input type="submit" value="Buscar Pregunta">
 </form>	   
-
+<div>
 <table>
 <% var i; for (i=0; i < quizes.length; i++) {%>
  <tr>
@@ -18,4 +18,5 @@
  </tr>
 <% } %>
 </table><p>
+</div>
 <a href="/quizes/new"><button type="button">Crear pregunta</button></a>
