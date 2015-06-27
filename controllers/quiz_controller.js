@@ -61,16 +61,50 @@ exports.new = function(req, res) {
 // POST /quizes/create tomado de Juan Ignacio Gil
 exports.create = function(req, res) {
   var quiz = models.Quiz.build( req.body.quiz );
-  console.log("Ver que llega"+quiz.pregunta+" "+quiz.respuesta);
-var errors = quiz.validate();//ya qe el objeto errors no tiene then(
-if (errors)
-	{
-	var i=0; var errores=new Array();//se convierte en [] con la propiedad message por compatibilida con layout
-	for (var prop in errors) errores[i++]={message: errors[prop]};	
-	res.render('quizes/new', {quiz: quiz, errors: errores});
-	} else {
-	quiz // save: guarda en DB campos pregunta y respuesta de quiz
-	.save({fields: ["pregunta", "respuesta"]})
-	.then( function(){ res.redirect('/quizes')}) ;
-	}
+//  console.log("Ver que llega"+quiz.pregunta+" "+quiz.respuesta);
+	var errors = quiz.validate();//ya qe el objeto errors no tiene then(
+	if (errors)
+		{
+		var i=0; var errores=new Array();//se convierte en [] con la propiedad message por compatibilida con layout
+		for (var prop in errors) errores[i++]={message: errors[prop]};	
+		res.render('quizes/new', {quiz: quiz, errors: errores});
+		} else {
+		quiz // save: guarda en DB campos pregunta y respuesta de quiz
+		.save({fields: ["pregunta", "respuesta"]})
+		.then( function(){ res.redirect('/quizes')}) ;
+		}
+	};
+
+// GET /quizes/:id/edit
+exports.edit = function(req, res) {
+  res.render('quizes/edit', {quiz: req.quiz, errors: []})
 };
+
+
+// PUT /quizes/:id
+exports.update = function(req, res) {
+   // console.log("antes");
+    req.quiz.pregunta = req.body.quiz.pregunta;
+    req.quiz.respuesta = req.body.quiz.respuesta;
+	var errors = req.quiz.validate();//ya qe el objeto errors no tiene then(
+	//console.log("despues");
+	if (errors)
+		{
+		var i=0; var errores=new Array();//se convierte en [] con la propiedad message por compatibilida con layout
+		for (var prop in errors) errores[i++]={message: errors[prop]};	
+		res.render('quizes/edit', {quiz: req.quiz, errors: errores});
+		} else {
+		req.quiz // save: guarda en DB campos pregunta y respuesta de quiz
+		.save({fields: ["pregunta", "respuesta"]})
+		.then( function(){ res.redirect('/quizes')}) ;
+		}
+	};
+
+
+// DELETE /quizes/:id
+exports.destroy = function(req, res) {
+  req.quiz.destroy().then( function() {
+    res.redirect('/quizes');
+  }).catch(function(error){next(error)});  
+};
+
