@@ -63,7 +63,7 @@ exports.new = function(req, res) {
 // POST /quizes/create tomado de Juan Ignacio Gil
 exports.create = function(req, res) {
   var quiz = models.Quiz.build( req.body.quiz );
-//  console.log("Ver que llega"+quiz.pregunta+" "+quiz.respuesta);
+  //console.log("Ver que llega"+quiz.pregunta+" "+quiz.respuesta+" "+quiz.tema);
 	var errors = quiz.validate();//ya qe el objeto errors no tiene then(
 	if (errors)
 		{
@@ -72,7 +72,7 @@ exports.create = function(req, res) {
 		res.render('quizes/new', {quiz: quiz, errors: errores});
 		} else {
 		quiz // save: guarda en DB campos pregunta y respuesta de quiz
-		.save({fields: ["pregunta", "respuesta"]})
+		.save({fields: ["pregunta", "respuesta","tema"]})
 		.then( function(){ res.redirect('/quizes')}) ;
 		}
 	};
