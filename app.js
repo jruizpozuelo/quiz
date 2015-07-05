@@ -36,9 +36,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Helpers dinàmicos
-console.log('APP');
+
 app.use(function(req,res,next){
-console.log('LOGIN');
+
 	// guardar path en session.redir para despues de login
 	if (!req.path.match(/\/login |\/logout/)){
 		req.session.redir= req.path;
@@ -47,6 +47,19 @@ console.log('LOGIN');
 	res.locals.session=req.session;
 	
 	next();
+});
+
+// control del tiempo de sesion, dos minutos máximo
+app.use(function(req, res, next) {
+  //  console.log('paso por control de tiempo');
+    if (req.session.user) {
+        if (Date.now() - req.session.user.lastRequestTime > 2*60*1000) {
+            delete req.session.user;
+        } else {
+            req.session.user.lastRequestTime = Date.now();
+        }
+    }
+next();
 });
 
 app.use('/', routes);
