@@ -31,7 +31,7 @@ var sequelize = new Sequelize( DB_name,user,pwd,
 var quit_path =path.join(__dirname,'quiz');
 var Quiz = sequelize.import(quit_path);	
 // Importar la definicion de la tabla comment
-var comment_path = path.join(__dirname,'Comment');
+var comment_path = path.join(__dirname,'comment');
 var Comment = sequelize.import(comment_path);
 
 //cardinalidad
